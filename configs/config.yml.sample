@@ -23,17 +23,6 @@ prometheus:
   vm_cluster_mode: false  # Set to true for VM cluster mode
   vm_tenant_id: "0"      # Tenant ID for VM cluster mode
   vm_path_prefix: ""     # Optional path prefix (e.g. "prometheus" for VM)
-# Optional: a second, dedicated Prometheus/VictoriaMetrics endpoint for
-# ClickHouse-internal metrics (ClickHouseMetrics_*, ClickHouseProfileEvents_*,
-# ClickHouseAsyncMetrics_*). When `host` is set, the server exposes an extra
-# `prometheus_query_clickhouse` tool alongside `prometheus_query`. This is
-# config-file only (no CLI flag); leave `host` empty to disable.
-prometheus_clickhouse:
-  host: ""               # empty disables the prometheus_query_clickhouse tool
-  port: 9091
-  vm_cluster_mode: false
-  vm_tenant_id: "0"
-  vm_path_prefix: ""
 # HTTP server (enables network-accessible MCP for Kubernetes/remote deployments)
 http:
   addr: ":8080"           # Listen address

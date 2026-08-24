@@ -8,7 +8,6 @@ Housekeeper runs as an HTTP MCP server, providing AI assistants like Claude with
 
 - **ClickHouse Queries**: Read-only access to configurable databases (defaults to `system.*` tables)
 - **Prometheus/Victoria Metrics**: Execute PromQL queries for metrics correlation and analysis
-- **ClickHouse-internal metrics (optional)**: Configure a second Prometheus/Victoria Metrics endpoint to expose a dedicated `prometheus_query_clickhouse` tool
 - **In-account diagnosis (optional)**: A Bedrock-backed `clickhouse_diagnose` tool that investigates server-side on an elevated connection and returns only a summary
 - **Smart Cluster Querying**: Automatic use of `clusterAllReplicas()` for system tables only (non-system tables are queried directly)
 
@@ -79,9 +78,6 @@ Example requests:
 - "Show me memory usage trends for the past hour"
 - "Find nodes with high CPU usage"
 
-### `prometheus_query_clickhouse` (optional)
-Same PromQL interface as `prometheus_query`, but targets a separate endpoint dedicated to ClickHouse-internal metrics (`ClickHouseMetrics_*`, `ClickHouseProfileEvents_*`, `ClickHouseAsyncMetrics_*`). Only registered when `prometheus_clickhouse.host` is set in config (see [Configuration](#️-configuration)). Use `prometheus_query` for general fleet/host metrics and `prometheus_query_clickhouse` for ClickHouse server internals.
-
 ### `clickhouse_diagnose` (optional)
 Ask a natural-language question ("why is X slow", "what's driving load") and a server-side Bedrock agent investigates via a guarded `run_sql` tool on a separate, elevated ClickHouse connection, returning only an attributed summary. Registered when `bedrock.region` + `bedrock.model_id` are set; credentials come from the default AWS chain. Bounded by `bedrock.max_iterations` / `bedrock.max_seconds` — make sure your MCP client's tool timeout exceeds the latter. See [MCP.md](./MCP.md) for details.
 
@@ -148,10 +144,6 @@ prometheus:
   vm_cluster_mode: false
   vm_tenant_id: "0"
   vm_path_prefix: ""
-# Optional: enables the prometheus_query_clickhouse tool when host is set
-prometheus_clickhouse:
-  host: ""
-  port: 9091
 http:
   addr: ":8080"
   auth_token: "your-secret-token"

@@ -72,7 +72,6 @@ Available flags:
 - Required keys for ClickHouse: `clickhouse.host`, `clickhouse.port`, `clickhouse.user`, `clickhouse.password`, `clickhouse.database`, `clickhouse.cluster`.
   - The DB user should be read‑only; queries are restricted to the configured `clickhouse.allowed_databases` (defaults to `["system"]`).
 - Required keys for Prometheus: `prometheus.host`, `prometheus.port`.
-- Optional `prometheus_clickhouse.*` keys (config-file only, no CLI flag): set `prometheus_clickhouse.host` to register the `prometheus_query_clickhouse` tool against a dedicated ClickHouse-internal metrics endpoint.
 
 ### Victoria Metrics from Kubernetes
 
@@ -120,13 +119,6 @@ The server uses the official go-sdk and serves MCP over HTTP using the streamabl
   - `start` (optional): Start time in RFC3339 format or relative time (e.g. "-1h")
   - `end` (optional): End time in RFC3339 format or relative time (e.g. "-1h")
   - `step` (optional): Step duration (e.g. "15s", "1m", "1h") (default: "1m")
-
-### Tool: prometheus_query_clickhouse (optional)
-
-- Name: `prometheus_query_clickhouse`
-- Description: Same PromQL interface as `prometheus_query`, but targets a separate endpoint dedicated to ClickHouse-internal metrics (`ClickHouseMetrics_*`, `ClickHouseProfileEvents_*`, `ClickHouseAsyncMetrics_*`).
-- Registration: only exposed when `prometheus_clickhouse.host` is set in config.
-- Arguments: identical to `prometheus_query`.
 
 ### Tool: clickhouse_diagnose (optional)
 

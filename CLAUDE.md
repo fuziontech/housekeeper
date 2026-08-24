@@ -10,7 +10,6 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 - **clickhouse_query** — read-only queries (structured fields or free-form single SELECT/WITH), restricted to `clickhouse.allowed_databases`. Free-form SQL goes through the validator in `clickhouse_mcp.go` (allowlist of table refs, forbidden keywords, quote/whitespace normalization).
 - **prometheus_query** — PromQL range queries against the main Prometheus/VM endpoint.
-- **prometheus_query_clickhouse** — same interface against a dedicated ClickHouse-internals metrics endpoint; only registered when `prometheus_clickhouse.host` is set.
 - **clickhouse_diagnose** — only registered when `bedrock.region` + `bedrock.model_id` are set. Runs a server-side Bedrock Converse tool-use loop (`bedrock.go`) with a single `run_sql` tool against the elevated `analyst_clickhouse.*` connection, bounded by `bedrock.max_iterations` and `bedrock.max_seconds`, and returns only a text summary. The system prompt lives in `diagnose_mcp.go`; deployment-specific context is appended from `mcp.extra_tool_description`.
 
 ### Analysis Mode (legacy, optional)

@@ -36,13 +36,6 @@ func loadConfig(explicitPath string) error {
 	viper.SetDefault("prometheus.vm_tenant_id", "0")
 	viper.SetDefault("prometheus.vm_path_prefix", "")
 
-	// Optional second endpoint for ClickHouse-internal metrics. Empty host disables it.
-	viper.SetDefault("prometheus_clickhouse.host", "")
-	viper.SetDefault("prometheus_clickhouse.port", 9091)
-	viper.SetDefault("prometheus_clickhouse.vm_cluster_mode", false)
-	viper.SetDefault("prometheus_clickhouse.vm_tenant_id", "0")
-	viper.SetDefault("prometheus_clickhouse.vm_path_prefix", "")
-
 	viper.SetDefault("logging.level", "info")
 	viper.SetDefault("logging.format", "text")
 

@@ -12,13 +12,9 @@ import (
 	"github.com/spf13/viper"
 )
 
-const (
-	defaultPromEndpoint = "default"
-	chPromEndpoint      = "clickhouse"
-)
+const defaultPromEndpoint = "default"
 
-// promClients are keyed by endpoint name. Default is always present;
-// `clickhouse` is opt-in via prometheus_clickhouse.host.
+// promClients are keyed by endpoint name.
 var promClients = map[string]v1.API{}
 
 // prometheusArgs defines the arguments for Prometheus queries.
@@ -60,21 +56,7 @@ func initPrometheus() error {
 		return err
 	}
 	promClients[defaultPromEndpoint] = defaultClient
-
-	chHost := viper.GetString("prometheus_clickhouse.host")
-	if chHost != "" && chHost != "localhost" {
-		chClient, err := initPromClient("prometheus_clickhouse")
-		if err != nil {
-			return err
-		}
-		promClients[chPromEndpoint] = chClient
-	}
 	return nil
-}
-
-func hasClickhousePromEndpoint() bool {
-	_, ok := promClients[chPromEndpoint]
-	return ok
 }
 
 func queryPrometheus(endpoint, query string, start, end time.Time, step time.Duration) (interface{}, error) {

@@ -82,20 +82,7 @@ system.* tables are per-node (wrap them yourself in sql mode); replicated tables
 
 start/end: RFC3339 UTC or relative ("-30m", "-1h"). end defaults to now(). Future timestamps are rejected. Prefer relative ("-30m") when the current time isn't known.
 step: Go duration ("30s", "1m"). Pick one that yields <~50 points over the window.`
-	if hasClickhousePromEndpoint() {
-		defaultPromDesc += "\n\nFor ClickHouse-internal metrics (ClickHouseMetrics_*, ClickHouseProfileEvents_*, ClickHouseAsyncMetrics_*) prefer prometheus_query_clickhouse — it hits a dedicated endpoint with higher scrape resolution."
-	}
 	registerPrometheusTool(srv, "prometheus_query", "Query Prometheus metrics", defaultPromDesc, defaultPromEndpoint)
-
-	if hasClickhousePromEndpoint() {
-		chDesc := `Execute PromQL range queries against the ClickHouse-internal Prometheus endpoint (typically 15s scrape, native CH labels: type, shard, replica, instance, ready).
-
-Use this for ClickHouseMetrics_*, ClickHouseProfileEvents_*, ClickHouseAsyncMetrics_*. For K8s/fleet metrics (kube_*, container_*, node_*, etc.) use prometheus_query instead.
-
-start/end: RFC3339 UTC or relative ("-30m", "-1h"). end defaults to now(). Future timestamps are rejected.
-step: Go duration ("15s", "30s", "1m"). 15s exploits the upstream's native resolution.`
-		registerPrometheusTool(srv, "prometheus_query_clickhouse", "Query ClickHouse-internal Prometheus", chDesc, chPromEndpoint)
-	}
 
 	// Optional: in-account, Bedrock-backed agentic diagnosis tool. Only exposed
 	// when bedrock.region + bedrock.model_id are configured. Runs server-side
